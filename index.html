@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentPilot | AI Career Platform</title>
+    <link rel="icon" href="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/files/Gemini_Generated_Image_6k3n0t6k3n0t6k3n-removebg-preview.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-item.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border-left: 4px solid #3b82f6;
+        }
+
+
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+            overflow-y: auto !important;
+            /* Force enable scrolling */
+        }
+
+        .tech-pill {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.70rem;
+            color: #60a5fa;
+        }
+
+        .sub-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 8px;
+        }
+
+        .news-card img {
+            height: 140px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* Roadmap Styles */
+
+        .premade-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+        }
+
+        .premade-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(59, 130, 246, 0.3);
+        }
+
+        .premade-card img {
+            transition: transform 0.6s ease;
+        }
+
+        .premade-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card-overlay {
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 20%, rgba(15, 23, 42, 0.4) 60%, transparent 100%);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Roadmap timeline */
+        .roadmap-track {
+            position: relative;
+        }
+
+        .roadmap-dot {
+            width: 44px;
+            height: 44px;
+            border-radius: 9999px;
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            color: #0f172a;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), transparent 60%),
+                linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(16, 185, 129, 0.85));
+        }
+
+        .roadmap-spine {
+            width: 4px;
+            flex: 1;
+            background: linear-gradient(to bottom, rgba(148, 163, 184, 0.7), transparent);
+            border-radius: 9999px;
+            margin-top: 4px;
+        }
+
+        /* Markdown Rendering Styles for Chatbot */
+        .markdown-body {
+            color: #e2e8f0;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-top: 1.2em;
+            margin-bottom: 0.5em;
+        }
+
+        .markdown-body h2 {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.25em;
+            font-size: 1.1rem;
+        }
+
+        .markdown-body ul {
+            list-style-type: disc;
+            padding-left: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .markdown-body ol {
+            list-style-type: decimal;
+            padding-left: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .markdown-body li {
+            margin-bottom: 0.25em;
+        }
+
+        .markdown-body strong {
+            color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5em 0;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .markdown-body th,
+        .markdown-body td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .markdown-body th {
+            background: rgba(30, 41, 59, 0.8);
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1em;
+        }
+
+        /* Mobile nav state */
+        .mobile-nav-item {
+            color: #cbd5e1;
+            transition: color 0.2s ease, background 0.2s ease;
+            border-radius: 12px;
+            padding: 10px 6px;
+        }
+
+        .mobile-nav-item.active {
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow: auto;
+            }
+
+            #view-content {
+                padding: 1.25rem 1rem 5.5rem 1rem;
+            }
+
+            header {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .glass-card {
+                backdrop-filter: blur(10px);
+            }
+        }
+    </style>
+</head>
+
+<body class="h-screen flex overflow-hidden bg-[#0f172a] no-scrollbar">
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="w-20 hover:w-64 glass-card h-full flex flex-col hidden md:flex border-r border-slate-800 shrink-0 transition-all duration-300 group z-30 overflow-hidden no-scrollbar">
+        <div class="p-4 shrink-0">
+            <div class="flex items-center gap-3">
+                <img src="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/user_files/Gemini_Generated_Image_6k3n0t6k3n0t6k3n-removebg-preview.png"
+                    class="w-10 h-10 shrink-0 object-contain" alt="TalentPilot Logo" />
+                <span
+                    class="text-xl font-bold tracking-tight text-white opacity-0 group-hover:opacity-100 transition-opacity">TalentPilot</span>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4 overflow-x-hidden overflow-y-auto no-scrollbar">
+            <button onclick="switchTab('upload')" id="btn-upload"
+                class="sidebar-item active w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-colors">
+                <i data-lucide="file-up" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Upload
+                    Resume</span>
+            </button>
+            <button onclick="switchTab('analysis')" id="btn-analysis"
+                class="sidebar-item hidden w-full flex items-center gap-3 px-4 group-hover:pl-10 group-hover:pr-4 py-2 mt-1 rounded-lg hover:bg-slate-800 transition-all duration-300 opacity-80 text-sm">
+                <i data-lucide="microscope" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Analyze
+                    Resume</span>
+            </button>
+            <button onclick="switchTab('jobs')" id="btn-jobs"
+                class="sidebar-item hidden w-full flex items-center gap-3 px-4 group-hover:pl-10 group-hover:pr-4 py-2 mt-1 rounded-lg hover:bg-slate-800 transition-all duration-300 opacity-80 text-sm">
+                <i data-lucide="briefcase" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Job Match</span>
+            </button>
+            <button onclick="switchTab('review')" id="btn-review"
+                class="sidebar-item hidden w-full flex items-center gap-3 px-4 group-hover:pl-10 group-hover:pr-4 py-2 mt-1 rounded-lg hover:bg-slate-800 transition-all duration-300 opacity-80 text-sm">
+                <i data-lucide="bot-message-square" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Resume
+                    Reviewer</span>
+            </button>
+            <button onclick="switchTab('interview')" id="btn-interview"
+                class="sidebar-item hidden w-full flex items-center gap-3 px-4 group-hover:pl-10 group-hover:pr-4 py-2 mt-1 rounded-lg hover:bg-slate-800 transition-all duration-300 opacity-80 text-sm">
+                <i data-lucide="users" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Interview
+                    Coach</span>
+            </button>
+            <button onclick="switchTab('build')" id="btn-build"
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-colors">
+                <i data-lucide="file-edit" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Create
+                    Resume</span>
+            </button>
+            <button onclick="switchTab('dashboard')" id="btn-dashboard"
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-colors">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Dashboard</span>
+            </button>
+            <button onclick="switchTab('roadmap')" id="btn-roadmap"
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-colors">
+                <i data-lucide="map" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Tech Roadmap</span>
+            </button>
+            <button onclick="switchTab('news')" id="btn-news"
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-colors">
+                <i data-lucide="newspaper" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Tech News</span>
+            </button>
+
+            <button onclick="switchTab('guide')" id="btn-guide"
+                class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-colors">
+                <i data-lucide="help-circle" class="w-5 h-5 shrink-0"></i>
+                <span class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">User Guide</span>
+            </button>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+        <header
+            class="h-16 border-b border-slate-800 flex items-center justify-between px-4 md:px-8 bg-[#0f172a]/80 backdrop-blur-md z-10 shrink-0">
+            <h2 id="page-title" class="text-lg font-semibold text-white">Global Tech Trend</h2>
+
+        </header>
+
+        <!-- Fixed Scroll Container -->
+        <div id="view-content" class="flex-1 overflow-y-auto p-4 md:p-8 pb-28 md:pb-8 bg-slate-950/30 no-scrollbar">
+
+            <!-- Upload View -->
+            <section id="view-upload" class="space-y-8">
+                <div
+                    class="max-w-2xl mx-auto mt-10 glass-card p-10 rounded-3xl border-dashed border-2 border-slate-700 text-center">
+                    <i data-lucide="cloud-upload" class="w-12 h-12 text-blue-500 mx-auto mb-4"></i>
+                    <h2 class="text-2xl font-bold text-white mb-2">Upload Your Resume</h2>
+                    <p class="text-slate-400 text-sm mb-6">Upload your resume to get insights and unlock all features.
+                    </p>
+                    <div class="relative inline-block w-full max-w-xs">
+                        <input type="file" id="resume-input"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            onchange="handleFileUpload(this)">
+                        <button id="upload-btn"
+                            class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer relative z-0">
+                            <i data-lucide="upload" id="upload-icon" class="w-4 h-4"></i>
+                            <i data-lucide="loader-2" id="upload-spinner" class="w-4 h-4 animate-spin hidden"></i>
+                            <span id="upload-btn-text">Select File</span>
+                        </button>
+                    </div>
+                    <div id="upload-message" class="mt-4 text-sm font-medium h-5"></div>
+                </div>
+                <div class="text-center text-slate-400 text-sm">
+                    <p>Developed by Muhammad Hamza</p>
+                    <p><a href="https://www.linkedin.com/in/muhammad-hamzads" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200">LinkedIn</a> | <a href="https://github.com/MuhammadHamza123c" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200">GitHub</a></p>
+                </div>
+            </section>
+
+            <!-- Guide View -->
+            <section id="view-guide" class="hidden space-y-12 pb-20">
+                <div class="text-center max-w-3xl mx-auto space-y-4">
+                    <h1 class="text-4xl font-black text-white tracking-tight">Master <span
+                            class="text-blue-500">TalentPilot</span></h1>
+                    <p class="text-slate-400 text-lg">Your complete path from profile analysis to dream job landing.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- Step 1 -->
+                    <div
+                        class="glass-card p-8 rounded-3xl border-l-4 border-blue-500 space-y-4 relative overflow-hidden group">
+                        <div
+                            class="absolute top-4 right-4 text-6xl font-black text-white/5 group-hover:text-blue-500/10 transition-colors">
+                            01</div>
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="upload" class="w-6 h-6 text-blue-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Upload Your Identity</h3>
+                        <p class="text-slate-400 leading-relaxed text-sm">Start by uploading your current resume. Our AI
+                            scans every detail to understand your professional DNA.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div
+                        class="glass-card p-8 rounded-3xl border-l-4 border-purple-500 space-y-4 relative overflow-hidden group">
+                        <div
+                            class="absolute top-4 right-4 text-6xl font-black text-white/5 group-hover:text-purple-500/10 transition-colors">
+                            02</div>
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="microscope" class="w-6 h-6 text-purple-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Deep Analysis</h3>
+                        <p class="text-slate-400 leading-relaxed text-sm">Visit 'Analyze Resume' after uploading to see
+                            your ATS score, extracted skills, and experience breakdown visualized in real-time.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div
+                        class="glass-card p-8 rounded-3xl border-l-4 border-emerald-500 space-y-4 relative overflow-hidden group">
+                        <div
+                            class="absolute top-4 right-4 text-6xl font-black text-white/5 group-hover:text-emerald-500/10 transition-colors">
+                            03</div>
+                        <div class="w-12 h-12 bg-emerald-500/20 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="users" class="w-6 h-6 text-emerald-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Interview User Guide</h3>
+                        <p class="text-slate-400 leading-relaxed text-sm">Open 'Interview Coach' to practice technical and behavioral rounds, track feedback, and get tailored follow-up questions.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div
+                        class="glass-card p-8 rounded-3xl border-l-4 border-amber-500 space-y-4 relative overflow-hidden group">
+                        <div
+                            class="absolute top-4 right-4 text-6xl font-black text-white/5 group-hover:text-amber-500/10 transition-colors">
+                            04</div>
+                        <div class="w-12 h-12 bg-amber-500/20 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="map" class="w-6 h-6 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Roadmap to Success</h3>
+                        <p class="text-slate-400 leading-relaxed text-sm">Generate targeted learning paths to fill your
+                            skill gaps. Pick a technology and we'll show you the exact steps to master it.</p>
+                    </div>
+                </div>
+
+                <div class="pt-8 border-t border-slate-800">
+                    <h2 class="text-2xl font-bold text-white mb-8 text-center italic">Powerful Platform Tools</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                        <!-- Dashboard -->
+                        <div
+                            class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-blue-500/50 transition-all text-center space-y-3">
+                            <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto">
+                                <i data-lucide="layout-dashboard" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm uppercase tracking-wider">Dashboard</h4>
+                            <p class="text-xs text-slate-500">Real-time market tech trends, salary forecasts, and
+                                industry demand charts.</p>
+                        </div>
+                        <!-- Tech News -->
+                        <div
+                            class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-cyan-500/50 transition-all text-center space-y-3">
+                            <div class="w-10 h-10 bg-cyan-500/10 rounded-xl flex items-center justify-center mx-auto">
+                                <i data-lucide="newspaper" class="w-5 h-5 text-cyan-400"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm uppercase tracking-wider">Tech News</h4>
+                            <p class="text-xs text-slate-500">Filtered industry updates across 10+ topics from AI to
+                                Quantum Computing.</p>
+                        </div>
+                        <!-- Interview Coach -->
+                        <div
+                            class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all text-center space-y-3">
+                            <div
+                                class="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center mx-auto">
+                                <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm uppercase tracking-wider">Mock Interview</h4>
+                            <p class="text-xs text-slate-500">AI-driven practice sessions that adapt to your specific
+                                skills and experience.</p>
+                        </div>
+                        <!-- Resume Reviewer -->
+                        <div
+                            class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-indigo-500/50 transition-all text-center space-y-3">
+                            <div class="w-10 h-10 bg-indigo-500/10 rounded-xl flex items-center justify-center mx-auto">
+                                <i data-lucide="bot-message-square" class="w-5 h-5 text-indigo-400"></i>
+                            </div>
+                            <h4 class="font-bold text-white text-sm uppercase tracking-wider">Expert Review</h4>
+                            <p class="text-xs text-slate-500">Interactive chat with our AI agent to polish specific
+                                bullet points and layouts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="max-w-xl mx-auto glass-card p-6 rounded-2xl border border-blue-500/30 bg-blue-500/5 text-center">
+                    <p class="text-sm font-medium text-blue-300">Ready to transform your career?</p>
+                    <button onclick="switchTab('upload')"
+                        class="mt-4 bg-blue-600 hover:bg-blue-500 text-white px-8 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-600/20">Get
+                        Started Now</button>
+                </div>
+                <div class="text-center text-slate-400 text-sm">
+                    <p>Developed by Muhammad Hamza</p>
+                    <p><a href="https://www.linkedin.com/in/muhammad-hamzads" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200">LinkedIn</a> | <a href="https://github.com/MuhammadHamza123c" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200">GitHub</a></p>
+                </div>
+            </section>
+
+            <!-- Analysis View -->
+            <section id="view-analysis" class="hidden space-y-8">
+                <!-- Hero Message Area -->
+                <div
+                    class="glass-card p-8 rounded-3xl bg-gradient-to-br from-blue-900/40 to-slate-900 border border-blue-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                        <i data-lucide="bot" class="w-32 h-32 text-blue-400"></i>
+                    </div>
+                    <div class="relative z-10 max-w-3xl">
+                        <h1 class="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+                            <i data-lucide="sparkles" class="w-8 h-8 text-blue-400"></i>
+                            Analysis Complete
+                        </h1>
+                        <p id="analysis-message" class="text-xl text-slate-300 leading-relaxed font-medium">Generating
+                            your personalized profile insights...</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Left Column: ATS & Skills -->
+                    <div class="w-full lg:w-1/3 space-y-8">
+                        <!-- ATS Score Card -->
+                        <div class="glass-card p-8 rounded-3xl flex flex-col items-center justify-center text-center relative overflow-hidden group"
+                            id="ats-section">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <h3
+                                class="text-sm font-bold mb-6 tracking-widest text-slate-400 z-10 flex items-center gap-2 uppercase">
+                                <i data-lucide="target" class="w-4 h-4 text-blue-500"></i> ATS Match
+                            </h3>
+                            <div
+                                class="relative w-48 h-48 flex items-center justify-center rounded-full bg-slate-900/80 mb-6 shadow-[0_0_40px_rgba(0,0,0,0.5)] z-10">
+                                <!-- Inner glow ring -->
+                                <div class="absolute inset-2 rounded-full border border-slate-700/50"></div>
+                                <svg class="absolute inset-0 w-full h-full transform -rotate-90 drop-shadow-2xl">
+                                    <circle class="text-slate-800" stroke-width="14" stroke="currentColor"
+                                        fill="transparent" r="76" cx="96" cy="96" />
+                                    <circle id="ats-circle"
+                                        class="text-blue-500 transition-all duration-[2000ms] ease-out"
+                                        stroke-width="14" stroke-dasharray="477.5" stroke-dashoffset="477.5"
+                                        stroke-linecap="round" stroke="currentColor" fill="transparent" r="76" cx="96"
+                                        cy="96" />
+                                </svg>
+                                <div
+                                    class="flex flex-col items-center z-10 transform transition-transform group-hover:scale-105 duration-300">
+                                    <span id="ats-score-text"
+                                        class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 drop-shadow-md">-</span>
+                                    <span
+                                        class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Score</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-400 px-4 z-10 font-medium leading-relaxed">Compatibility score
+                                against market standards.</p>
+                        </div>
+
+                        <!-- Skills Section -->
+                        <div class="glass-card p-6 rounded-3xl space-y-6" id="skills-section">
+                            <h3
+                                class="text-xl font-bold flex items-center gap-2 text-purple-400 border-b border-slate-800 pb-4">
+                                <i data-lucide="code-2" class="w-6 h-6"></i> Evaluated Skills
+                            </h3>
+                            <div id="analysis-skills" class="space-y-4 max-h-[500px] overflow-y-auto no-scrollbar pr-2">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Experience & Projects -->
+                    <div class="w-full lg:w-2/3 space-y-8">
+                        <!-- Experience Timeline -->
+                        <div class="glass-card p-6 rounded-3xl space-y-6" id="experience-section">
+                            <h3
+                                class="text-xl font-bold flex items-center gap-2 text-emerald-400 border-b border-slate-800 pb-4">
+                                <i data-lucide="briefcase" class="w-6 h-6"></i> Professional Timeline
+                            </h3>
+                            <div id="analysis-experience"
+                                class="space-y-6 border-l-2 border-slate-800 ml-4 pl-6 relative">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Projects Gallery -->
+                        <div class="space-y-4" id="projects-section">
+                            <h3
+                                class="text-xl font-bold flex items-center gap-2 text-amber-400 bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                                <i data-lucide="rocket" class="w-6 h-6"></i> Key Projects & Implementations
+                            </h3>
+                            <div id="analysis-projects" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Job Match View -->
+            <section id="view-jobs" class="hidden space-y-8">
+                <!-- Hero Message Area -->
+                <div
+                    class="glass-card p-8 rounded-3xl bg-gradient-to-br from-indigo-900/40 to-slate-900 border border-indigo-500/20 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                        <i data-lucide="briefcase" class="w-32 h-32 text-indigo-400"></i>
+                    </div>
+                    <div class="relative z-10 max-w-3xl">
+                        <h1 class="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+                            <i data-lucide="target" class="w-8 h-8 text-indigo-400"></i>
+                            Career Opportunities
+                        </h1>
+                        <p id="jobs-message" class="text-xl text-slate-300 leading-relaxed font-medium">Scanning the
+                            market for your perfect matches...</p>
+                    </div>
+                </div>
+
+                <div id="jobs-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Resume Review View (Chatbot) -->
+            <section id="view-review" class="hidden absolute inset-0 z-20 bg-[#0f172a] flex flex-col overflow-hidden">
+                <!-- Chat Header -->
+                <div
+                    class="h-16 border-b border-slate-800 flex items-center px-8 bg-[#0f172a]/95 backdrop-blur-md shrink-0">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-3">
+                        <i data-lucide="bot" class="w-6 h-6 text-indigo-400"></i>
+                        AI Expert Reviewer
+                    </h2>
+                </div>
+
+                <!-- Chat History -->
+                <div id="chat-history" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-scrollbar pb-8 relative">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Chat Input Fixed at Bottom -->
+                <div class="shrink-0 p-4 md:p-6 bg-[#0f172a] border-t border-slate-800 w-full relative z-30">
+                    <div
+                        class="max-w-3xl mx-auto glass-card rounded-2xl p-2 flex items-center gap-2 border border-slate-700 focus-within:border-indigo-500/50 transition-colors shadow-2xl bg-[#1e293b]/90">
+                        <input type="text" id="chat-input" placeholder="Ask specific questions about your resume..."
+                            class="flex-1 bg-transparent w-full text-sm text-white px-4 py-3 focus:outline-none placeholder-slate-500"
+                            onkeypress="if(event.key === 'Enter') sendChatMessage()">
+                        <button onclick="sendChatMessage()"
+                            class="bg-indigo-600 hover:bg-indigo-500 text-white p-3 rounded-xl transition-colors flex items-center justify-center shrink-0">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interview Coach View (Chatbot) -->
+            <section id="view-interview"
+                class="hidden absolute inset-0 z-20 bg-[#0f172a] flex flex-col overflow-hidden">
+                <!-- Chat Header -->
+                <div
+                    class="h-16 border-b border-slate-800 flex items-center px-8 bg-[#0f172a]/95 backdrop-blur-md shrink-0">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-3">
+                        <i data-lucide="users" class="w-6 h-6 text-emerald-400"></i>
+                        AI Interview Coach
+                    </h2>
+                </div>
+
+                <!-- Chat History -->
+                <div id="chat-history-interview"
+                    class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-scrollbar pb-8 relative">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Chat Input Fixed at Bottom -->
+                <div class="shrink-0 p-4 md:p-6 bg-[#0f172a] border-t border-slate-800 w-full relative z-30">
+
+                    <!-- Start State -->
+                    <div id="interview-start-container" class="max-w-3xl mx-auto flex justify-center">
+                        <button onclick="startInterview()"
+                            class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-emerald-500/20 transition-all flex items-center gap-3">
+                            <i data-lucide="play" class="w-6 h-6"></i>
+                            Start Mock Interview
+                        </button>
+                    </div>
+
+                    <!-- Active State -->
+                    <div id="interview-controls-container" class="hidden max-w-3xl mx-auto space-y-3">
+                        <div class="flex justify-end gap-2 px-2">
+                            <button onclick="sendInterviewChatMessage('Skip')"
+                                class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors flex items-center gap-1">
+                                <i data-lucide="skip-forward" class="w-3 h-3"></i> Skip
+                            </button>
+                            <button onclick="sendInterviewChatMessage('Stop')"
+                                class="text-xs bg-red-900/50 hover:bg-red-800/80 text-red-200 px-3 py-1.5 rounded-lg border border-red-800/50 transition-colors flex items-center gap-1">
+                                <i data-lucide="square" class="w-3 h-3"></i> Stop
+                            </button>
+                        </div>
+                        <div
+                            class="glass-card rounded-2xl p-2 flex items-center gap-2 border border-slate-700 focus-within:border-emerald-500/50 transition-colors shadow-2xl bg-[#1e293b]/90">
+                            <input type="text" id="chat-input-interview"
+                                placeholder="Practice answering interview questions..."
+                                class="flex-1 bg-transparent w-full text-sm text-white px-4 py-3 focus:outline-none placeholder-slate-500"
+                                onkeypress="if(event.key === 'Enter') sendInterviewChatMessage()">
+                            <button onclick="sendInterviewChatMessage()"
+                                class="bg-emerald-600 hover:bg-emerald-500 text-white p-3 rounded-xl transition-colors flex items-center justify-center shrink-0">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Build Resume View (Chatbot) -->
+            <section id="view-build" class="hidden absolute inset-0 z-20 bg-[#0f172a] flex flex-col overflow-hidden">
+                <!-- Chat Header -->
+                <div
+                    class="h-16 border-b border-slate-800 flex items-center px-8 bg-[#0f172a]/95 backdrop-blur-md shrink-0">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-3">
+                        <i data-lucide="file-edit" class="w-6 h-6 text-fuchsia-400"></i>
+                        AI Resume Builder
+                    </h2>
+                </div>
+
+                <!-- Chat History -->
+                <div id="chat-history-build"
+                    class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-scrollbar pb-8 relative">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Chat Input Fixed at Bottom -->
+                <div class="shrink-0 p-4 md:p-6 bg-[#0f172a] border-t border-slate-800 w-full relative z-30">
+
+                    <!-- START SCREEN (shown first) -->
+                    <!-- Templates Popover -->
+                    <div id="templates-popover"
+                        class="hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-4 p-4 glass-card rounded-2xl border border-slate-700 shadow-2xl bg-[#1e293b] w-full max-w-2xl grid grid-cols-1 md:grid-cols-3 gap-4 z-40">
+                        <div onclick="selectTemplate('3')" id="template-3"
+                            class="cursor-pointer border-2 border-slate-700 hover:border-fuchsia-500 rounded-lg overflow-hidden transition-all bg-slate-800 p-2 text-center group">
+                            <img src="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/files/resume_analyze/resume_a8b49e79.png"
+                                class="w-full h-auto object-cover rounded shadow-md" />
+                            <div class="mt-2 text-sm font-medium text-slate-300 group-hover:text-white">Template 3</div>
+                        </div>
+                        <div onclick="selectTemplate('2')" id="template-2"
+                            class="cursor-pointer border-2 border-slate-700 hover:border-fuchsia-500 rounded-lg overflow-hidden transition-all bg-slate-800 p-2 text-center group">
+                            <img src="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/files/resume_analyze/resume241c2b04.png"
+                                class="w-full h-auto object-cover rounded shadow-md" />
+                            <div class="mt-2 text-sm font-medium text-slate-300 group-hover:text-white">Template 2</div>
+                        </div>
+                        <div onclick="selectTemplate('1')" id="template-1"
+                            class="cursor-pointer border-2 border-slate-700 hover:border-fuchsia-500 rounded-lg overflow-hidden transition-all bg-slate-800 p-2 text-center group">
+                            <img src="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/files/resume_analyze/resume_91c143b7.png"
+                                class="w-full h-auto object-cover rounded shadow-md" />
+                            <div class="mt-2 text-sm font-medium text-slate-300 group-hover:text-white">Template 1</div>
+                        </div>
+                    </div>
+
+                    <div id="build-start-container"
+                        class="max-w-xl mx-auto w-full flex items-center justify-center gap-4">
+                        <button onclick="toggleTemplates()" id="btn-toggle-templates"
+                            class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-6 py-3 rounded-xl border border-slate-700 transition-colors flex items-center gap-2 font-semibold">
+                            <i data-lucide="layout-template" class="w-5 h-5"></i>
+                            <span id="build-template-label">Templates</span>
+                        </button>
+                        <button onclick="startBuildSession()" id="btn-build-start"
+                            class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-fuchsia-600/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                            disabled>
+                            <i data-lucide="play" class="w-5 h-5"></i>
+                            Start
+                        </button>
+                    </div>
+
+                    <!-- CHAT INPUT (shown after Start is clicked) -->
+                    <div id="build-chat-container" class="hidden max-w-3xl mx-auto w-full">
+                        <div class="flex items-center gap-2">
+                            <!-- Template button stays accessible during chat -->
+                            <button onclick="toggleTemplates()" title="Change Template"
+                                class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-3 rounded-xl border border-slate-700 transition-colors flex items-center justify-center shrink-0">
+                                <i data-lucide="layout-template" class="w-5 h-5"></i>
+                            </button>
+                            <div
+                                class="flex-1 glass-card rounded-2xl p-2 flex items-center gap-2 border border-slate-700 focus-within:border-fuchsia-500/50 transition-colors shadow-2xl bg-[#1e293b]/90">
+                                <input type="text" id="chat-input-build" placeholder="Type your answer..."
+                                    class="flex-1 bg-transparent w-full text-sm text-white px-4 py-3 focus:outline-none placeholder-slate-500"
+                                    onkeypress="if(event.key === 'Enter') sendBuildChatMessage()">
+                                <button onclick="sendBuildChatMessage()" id="btn-send-build"
+                                    class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white p-3 rounded-xl transition-colors flex items-center justify-center shrink-0">
+                                    <i data-lucide="send" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            <!-- Skip Button -->
+                            <button onclick="sendBuildChatMessage('Skip')" id="btn-skip-build"
+                                class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white px-5 py-3 rounded-xl border border-slate-700 transition-colors flex items-center justify-center shrink-0 text-xs font-bold uppercase tracking-widest">
+                                Skip
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- Refine Resume View (Chatbot) -->
+            <section id="view-refine" class="hidden absolute inset-0 z-20 bg-[#0f172a] flex flex-col overflow-hidden">
+                <!-- Chat Header -->
+                <div
+                    class="h-16 border-b border-slate-800 flex items-center px-8 bg-[#0f172a]/95 backdrop-blur-md shrink-0">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-3">
+                        <i data-lucide="sparkles" class="w-6 h-6 text-yellow-400"></i>
+                        Refine My Resume
+                    </h2>
+                </div>
+
+                <!-- Chat History -->
+                <div id="chat-history-refine"
+                    class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-scrollbar pb-8 relative">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Chat Input Fixed at Bottom -->
+                <div class="shrink-0 p-4 md:p-6 bg-[#0f172a] border-t border-slate-800 w-full relative z-30">
+
+                    <!-- START SCREEN (shown first) -->
+                    <!-- Templates Popover -->
+                    <div id="templates-popover-refine"
+                        class="hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-4 p-4 glass-card rounded-2xl border border-slate-700 shadow-2xl bg-[#1e293b] w-full max-w-2xl grid grid-cols-1 md:grid-cols-3 gap-4 z-40">
+                        <div onclick="selectRefineTemplate('3')" id="refine-template-1"
+                            class="cursor-pointer border-2 border-slate-700 hover:border-yellow-500 rounded-lg overflow-hidden transition-all bg-slate-800 p-2 text-center group">
+                            <img src="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/files/resume_analyze/resume_a8b49e79.png"
+                                class="w-full h-auto object-cover rounded shadow-md" />
+                            <div class="mt-2 text-sm font-medium text-slate-300 group-hover:text-white">Template 3</div>
+                        </div>
+                        <div onclick="selectRefineTemplate('2')" id="refine-template-2"
+                            class="cursor-pointer border-2 border-slate-700 hover:border-yellow-500 rounded-lg overflow-hidden transition-all bg-slate-800 p-2 text-center group">
+                            <img src="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/files/resume_analyze/resume241c2b04.png"
+                                class="w-full h-auto object-cover rounded shadow-md" />
+                            <div class="mt-2 text-sm font-medium text-slate-300 group-hover:text-white">Template 2</div>
+                        </div>
+                        <div onclick="selectRefineTemplate('1')" id="refine-template-3"
+                            class="cursor-pointer border-2 border-slate-700 hover:border-yellow-500 rounded-lg overflow-hidden transition-all bg-slate-800 p-2 text-center group">
+                            <img src="https://znuiuhxyhpgqmdftansc.supabase.co/storage/v1/object/public/files/resume_analyze/resume_91c143b7.png"
+                                class="w-full h-auto object-cover rounded shadow-md" />
+                            <div class="mt-2 text-sm font-medium text-slate-300 group-hover:text-white">Template 1</div>
+                        </div>
+                    </div>
+
+                    <div id="refine-start-container"
+                        class="max-w-xl mx-auto w-full flex items-center justify-center gap-4">
+                        <button onclick="toggleRefineTemplates()" id="btn-toggle-templates-refine"
+                            class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-6 py-3 rounded-xl border border-slate-700 transition-colors flex items-center gap-2 font-semibold">
+                            <i data-lucide="layout-template" class="w-5 h-5"></i>
+                            <span id="refine-template-label">Templates</span>
+                        </button>
+                        <button onclick="startRefineSession()" id="btn-refine-start"
+                            class="bg-yellow-600 hover:bg-yellow-500 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-yellow-600/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i data-lucide="play" class="w-5 h-5"></i>
+                            Start
+                        </button>
+                    </div>
+
+                    <!-- CHAT INPUT (shown after Start is clicked) -->
+                    <div id="refine-chat-container" class="hidden max-w-3xl mx-auto w-full">
+                        <div class="flex items-center gap-2">
+                            <!-- Template button stays accessible during chat -->
+                            <button onclick="toggleRefineTemplates()" title="Change Template"
+                                class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-3 rounded-xl border border-slate-700 transition-colors flex items-center justify-center shrink-0">
+                                <i data-lucide="layout-template" class="w-5 h-5"></i>
+                            </button>
+                            <div
+                                class="flex-1 glass-card rounded-2xl p-2 flex items-center gap-2 border border-slate-700 focus-within:border-yellow-500/50 transition-colors shadow-2xl bg-[#1e293b]/90">
+                                <input type="text" id="chat-input-refine" placeholder="Type your message..."
+                                    class="flex-1 bg-transparent w-full text-sm text-white px-4 py-3 focus:outline-none placeholder-slate-500"
+                                    onkeypress="if(event.key === 'Enter') sendRefineChatMessage()">
+                                <button onclick="sendRefineChatMessage()" id="btn-send-refine"
+                                    class="bg-yellow-600 hover:bg-yellow-500 text-white p-3 rounded-xl transition-colors flex items-center justify-center shrink-0">
+                                    <i data-lucide="send" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Dashboard View -->
+            <section id="view-dashboard" class="hidden space-y-8">
+                <div id="dashboard-header" class="mb-4">
+                    <h1 id="dashboard-title" class="text-3xl font-bold text-white">Loading...</h1>
+                    <p id="dashboard-subtitle" class="text-slate-400 mt-1">Full market data breakdown</p>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="glass-card p-5 rounded-2xl">
+                        <span class="text-slate-400 text-xs font-medium uppercase">Top Tech</span>
+                        <p id="stat-top-tech" class="text-xl font-bold text-white">-</p>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl">
+                        <span class="text-slate-400 text-xs font-medium uppercase">Market Leader Salary</span>
+                        <p id="stat-max-salary" class="text-xl font-bold text-white">-</p>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl">
+                        <span class="text-slate-400 text-xs font-medium uppercase">Total Jobs Count</span>
+                        <p id="stat-total-jobs" class="text-xl font-bold text-white">-</p>
+                    </div>
+                    <div class="glass-card p-5 rounded-2xl">
+                        <span class="text-slate-400 text-xs font-medium uppercase">Next Trend</span>
+                        <p id="stat-upcoming" class="text-xl font-bold text-white">-</p>
+                    </div>
+                </div>
+
+                <!-- Technologies & Details -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold flex items-center gap-2 text-blue-400">
+                        <i data-lucide="cpu" class="w-6 h-6"></i> Technology Breakdown
+                    </h3>
+                    <div id="tech-list" class="grid grid-cols-1 gap-6">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Skill Areas Section -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold flex items-center gap-2 text-purple-400">
+                        <i data-lucide="layers" class="w-6 h-6"></i> Skill Area Intelligence
+                    </h3>
+                    <div id="skill-area-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Forecast Trends -->
+                <div class="space-y-6 pb-20">
+                    <h3 class="text-xl font-bold flex items-center gap-2 text-yellow-400">
+                        <i data-lucide="trending-up" class="w-6 h-6"></i> 2024-2025 Market Forecast
+                    </h3>
+                    <div id="upcoming-list" class="glass-card p-6 rounded-3xl grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech Roadmap View -->
+            <section id="view-roadmap" class="hidden space-y-6">
+                <div class="flex flex-col items-center justify-center text-center gap-6">
+                    <div>
+                        <h1 class="text-3xl font-bold text-white">AI Learning Roadmap</h1>
+                        <p id="roadmap-status-title" class="text-slate-400 mt-1">Plan your next career move</p>
+                    </div>
+                    <div class="flex gap-3 w-full max-w-lg">
+                        <input type="text" id="roadmap-tech-input" placeholder="e.g., MLOps, React, Python"
+                            class="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="fetchRoadmap()"
+                            class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors">Generate</button>
+                    </div>
+                </div>
+
+                <div id="roadmap-container" class="max-w-7xl w-full mx-auto py-12">
+                    <!-- Pre-made Roadmaps Section -->
+                    <div id="premade-roadmaps-section" class="mb-12">
+                        <h3 class="text-xl font-bold text-white mb-6">Popular Roadmaps</h3>
+                        <div id="premade-roadmaps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div id="roadmap-divider" class="border-t border-slate-800 my-12"></div>
+
+                    <!-- Roadmap nodes go here -->
+                    <div id="roadmap-display-section" class="hidden">
+                        <div id="roadmap-nodes-container"></div>
+                    </div>
+
+                    <div id="roadmap-placeholder" class="text-center py-20 text-slate-500">
+                        <i data-lucide="map" class="w-16 h-16 mx-auto mb-4 opacity-20"></i>
+                        <p>Enter a technology name above or select a popular roadmap to start</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech News View -->
+            <section id="view-news" class="hidden space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl font-bold text-white">Tech News</h1>
+                        <p id="news-status-title" class="text-slate-400 mt-1">Stay updated with global trends</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <select id="news-topic-select" onchange="fetchNews(1)"
+                            class="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Artificial Intelligence" selected>Artificial Intelligence</option>
+                            <option value="Machine Learning">Machine Learning</option>
+                            <option value="Blockchain">Blockchain</option>
+                            <option value="Quantum Computing">Quantum Computing</option>
+                            <option value="Edge Computing">Edge Computing</option>
+                            <option value="Metaverse">Metaverse</option>
+                            <option value="5G Networks">5G Networks</option>
+                            <option value="Cybersecurity">Cybersecurity</option>
+                            <option value="Cloud Computing">Cloud Computing</option>
+                            <option value="Robotic Process Automation">Robotic Process Automation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="news-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="flex justify-center items-center gap-4 py-10">
+                    <button onclick="changePage(-1)" id="news-prev"
+                        class="px-4 py-2 bg-slate-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-700 transition-colors">Previous</button>
+                    <span id="news-page-num" class="text-sm font-medium text-slate-400">Page 1</span>
+                    <button onclick="changePage(1)" id="news-next"
+                        class="px-4 py-2 bg-slate-800 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-700 transition-colors">Next</button>
+                </div>
+            </section>
+
+
+        </div>
+
+        <!-- Mobile Bottom Nav -->
+        <nav id="mobile-nav" class="md:hidden fixed bottom-4 inset-x-4 z-40">
+            <div class="glass-card border border-slate-800/80 backdrop-blur-xl p-2 flex gap-2 overflow-x-auto no-scrollbar">
+                <button type="button" data-tab="upload"
+                    class="mobile-nav-item active flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('upload')">
+                    <i data-lucide="file-up" class="w-5 h-5"></i>
+                    <span>Upload</span>
+                </button>
+                <button type="button" data-tab="analysis"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('analysis')">
+                    <i data-lucide="microscope" class="w-5 h-5"></i>
+                    <span>Analyze</span>
+                </button>
+                <button type="button" data-tab="jobs"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('jobs')">
+                    <i data-lucide="briefcase" class="w-5 h-5"></i>
+                    <span>Jobs</span>
+                </button>
+                <button type="button" data-tab="review"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('review')">
+                    <i data-lucide="bot-message-square" class="w-5 h-5"></i>
+                    <span>Review</span>
+                </button>
+                <button type="button" data-tab="interview"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('interview')">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Interview</span>
+                </button>
+                <button type="button" data-tab="build"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('build')">
+                    <i data-lucide="file-edit" class="w-5 h-5"></i>
+                    <span>Build</span>
+                </button>
+                <button type="button" data-tab="dashboard"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('dashboard')">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button type="button" data-tab="roadmap"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('roadmap')">
+                    <i data-lucide="map" class="w-5 h-5"></i>
+                    <span>Roadmap</span>
+                </button>
+                <button type="button" data-tab="news"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('news')">
+                    <i data-lucide="newspaper" class="w-5 h-5"></i>
+                    <span>News</span>
+                </button>
+                <button type="button" data-tab="guide"
+                    class="mobile-nav-item flex flex-col items-center gap-1 text-xs font-medium"
+                    onclick="switchTab('guide')">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                    <span>Guide</span>
+                </button>
+            </div>
+        </nav>
+    </main>
+
+    <script>
+        const BASE_URL = 'https://talent-pilot-wheat.vercel.app/';
+        let state = {
+            imageName: null,
+            newsPage: 1,
+            maxNewsPage: 3,
+            userChoice: "1",
+            currentResumeImageName: "None"
+        };
+
+        function refreshIcons() { lucide.createIcons(); }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`btn-${tabId}`)?.classList.add('active');
+            document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.mobile-nav-item[data-tab="${tabId}"]`)?.classList.add('active');
+            document.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${tabId}`)?.classList.remove('hidden');
+
+            const mobileNav = document.getElementById('mobile-nav');
+            const chatTabs = ['review', 'interview', 'build', 'refine'];
+            if (mobileNav) {
+                if (chatTabs.includes(tabId)) {
+                    mobileNav.classList.add('hidden');
+                } else {
+                    mobileNav.classList.remove('hidden');
+                }
+            }
+
+            if (tabId === 'dashboard') fetchDashboard();
+            if (tabId === 'news') fetchNews(1);
+            if (tabId === 'roadmap') fetchPremadeRoadmaps();
+
+            const analysisBtn = document.getElementById('btn-analysis');
+            if (tabId === 'analysis') {
+                if (state.imageName) {
+                    fetchAnalysis(state.imageName);
+                } else {
+                    document.getElementById('analysis-message').innerText = "Please upload a resume first to view analysis.";
+                    document.getElementById('ats-score-text').innerText = "-";
+                    document.getElementById('ats-circle').style.strokeDashoffset = "477.5";
+                    document.getElementById('analysis-skills').innerHTML = '';
+                    document.getElementById('analysis-experience').innerHTML = '';
+                    document.getElementById('analysis-projects').innerHTML = '';
+                    // Force hide if accessed without state
+                    // Removed the 'hidden' class from btn-analysis in HTML, so no need to add it here.
+                    switchTab('upload');
+                    return;
+                }
+            }
+
+            const jobsBtn = document.getElementById('btn-jobs');
+            if (tabId === 'jobs') {
+                if (state.imageName) {
+                    fetchJobs(state.imageName);
+                } else {
+                    document.getElementById('jobs-message').innerText = "Please upload a resume first to view job matches.";
+                    document.getElementById('jobs-grid').innerHTML = '';
+                    if (jobsBtn) jobsBtn.classList.add('hidden');
+                    switchTab('upload');
+                    return;
+                }
+            }
+
+            const reviewBtn = document.getElementById('btn-review');
+            if (tabId === 'review') {
+                if (state.imageName) {
+                    initChat();
+                } else {
+                    document.getElementById('chat-history').innerHTML = '';
+                    if (reviewBtn) reviewBtn.classList.add('hidden');
+                    switchTab('upload');
+                    return;
+                }
+            }
+
+            const interviewBtn = document.getElementById('btn-interview');
+            if (tabId === 'interview') {
+                if (state.imageName) {
+                    initInterviewChat();
+                } else {
+                    document.getElementById('chat-history-interview').innerHTML = '';
+                    if (interviewBtn) interviewBtn.classList.add('hidden');
+                    switchTab('upload');
+                    return;
+                }
+            }
+
+            if (tabId === 'refine') {
+                if (state.imageName) {
+                    initRefineChat();
+                } else {
+                    document.getElementById('chat-history-refine').innerHTML = '';
+                    const refineBtn = document.getElementById('btn-refine');
+                    if (refineBtn) refineBtn.classList.add('hidden');
+                    switchTab('upload');
+                    return;
+                }
+            }
+
+            if (tabId === 'build') {
+                initBuildChat();
+            }
+
+            if (tabId === 'upload') {
+                document.getElementById('page-title').innerText = "Submit Your Profile";
+            } else if (tabId === 'analysis') {
+                document.getElementById('page-title').innerText = "AI Resume Analysis";
+            } else if (tabId === 'jobs') {
+                document.getElementById('page-title').innerText = "Tailored Job Recommendations";
+            } else if (tabId === 'review') {
+                document.getElementById('page-title').innerText = "Interactive Expert Review";
+            } else if (tabId === 'interview') {
+                document.getElementById('page-title').innerText = "Interactive Interview Coach";
+            } else if (tabId === 'refine') {
+                document.getElementById('page-title').innerText = "Refine Your Resume";
+            } else if (tabId === 'build') {
+                document.getElementById('page-title').innerText = "AI Resume Builder";
+            } else if (tabId === 'guide') {
+                document.getElementById('page-title').innerText = "Platform User Guide";
+            } else {
+                document.getElementById('page-title').innerText = "Global Tech Trend";
+            }
+
+            refreshIcons();
+        }
+
+        async function fetchAnalysis(imageName) {
+            const messageEl = document.getElementById('analysis-message');
+            const atsScoreText = document.getElementById('ats-score-text');
+            const atsCircle = document.getElementById('ats-circle');
+            const skillsContainer = document.getElementById('analysis-skills');
+            const expContainer = document.getElementById('analysis-experience');
+            const projContainer = document.getElementById('analysis-projects');
+
+            messageEl.innerText = "Generating your personalized profile insights...";
+            atsScoreText.innerText = "-";
+            atsCircle.style.strokeDashoffset = "477.5";
+            skillsContainer.innerHTML = '';
+            expContainer.innerHTML = '';
+            projContainer.innerHTML = '';
+
+            try {
+                const res = await fetch(`${BASE_URL}TalentPilot/analyz_resume?image_name=${imageName}`);
+                const data = await res.json();
+                const response = data.respone;
+
+                if (!response) {
+                    messageEl.innerText = "Analysis failed or returned empty data. Please try uploading again.";
+                    messageEl.classList.add('text-red-400');
+                    return;
+                }
+
+                messageEl.classList.remove('text-red-400');
+                if (response.message && response.message.resume_thought) {
+                    messageEl.innerText = response.message.resume_thought;
+                } else {
+                    messageEl.innerText = data.TalentPilot || "Analysis Complete.";
+                }
+
+                // ATS Score Styling Updates
+                if (response.ATS !== undefined && response.ATS !== null) {
+                    atsScoreText.innerHTML = `${response.ATS}<span class="text-3xl text-slate-400 font-bold ml-1">%</span>`;
+                    // 477.5 is circumference for r=76
+                    const offset = 477.5 - (477.5 * response.ATS) / 100;
+                    atsCircle.style.strokeDashoffset = offset;
+
+                    atsCircle.classList.remove('text-blue-500', 'text-green-500', 'text-yellow-500', 'text-red-500');
+                    if (response.ATS >= 80) atsCircle.classList.add('text-green-500');
+                    else if (response.ATS >= 60) atsCircle.classList.add('text-yellow-500');
+                    else atsCircle.classList.add('text-red-500');
+                } else {
+                    document.getElementById('ats-section').classList.add('hidden');
+                }
+
+                // Skills
+                if (response.skills && response.skills.length > 0) {
+                    document.getElementById('skills-section').classList.remove('hidden');
+                    response.skills.forEach(skill => {
+                        const yearsArr = skill.year || [];
+                        const scoresArr = skill.skill_value_overyear || [];
+                        const maxScore = scoresArr.length > 0 ? Math.max(...scoresArr) : 0;
+                        const firstYear = yearsArr.length > 0 ? Math.min(...yearsArr) : 'N/A';
+
+                        // Calculate trend logic based on last two years
+                        let trendIcon = '';
+                        if (scoresArr.length >= 2) {
+                            const last = scoresArr[scoresArr.length - 1];
+                            const prev = scoresArr[scoresArr.length - 2];
+                            if (last > prev) trendIcon = '<i data-lucide="trending-up" class="w-3 h-3 text-green-400"></i>';
+                            else if (last < prev) trendIcon = '<i data-lucide="trending-down" class="w-3 h-3 text-red-400"></i>';
+                            else trendIcon = '<i data-lucide="minus" class="w-3 h-3 text-slate-500"></i>';
+                        }
+
+                        const div = document.createElement('div');
+                        div.className = 'group w-full bg-slate-900/40 p-3 rounded-xl border border-slate-800 hover:border-purple-500/50 transition-all';
+                        div.innerHTML = `
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex flex-col">
+                                    <h4 class="font-bold text-white text-sm group-hover:text-purple-400 transition-colors">${skill.name}</h4>
+                                    <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Tracked since ${firstYear}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    ${trendIcon}
+                                    <span class="text-sm font-black text-slate-300 bg-slate-800 px-2 py-1 rounded-md">${maxScore}%</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-gradient-to-r from-purple-600 to-indigo-400 h-1.5 rounded-full" style="width: ${maxScore}%"></div>
+                            </div>
+                        `;
+                        skillsContainer.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('skills-section').classList.add('hidden');
+                }
+
+                // Experience
+                if (response.experience && response.experience.length > 0) {
+                    document.getElementById('experience-section').classList.remove('hidden');
+                    response.experience.forEach(exp => {
+                        const div = document.createElement('div');
+                        div.className = 'relative before:absolute before:w-4 before:h-4 before:bg-emerald-500 before:border-4 before:border-slate-900 before:rounded-full before:-left-[35px] before:top-1.5 group hover:before:bg-blue-400 transition-all';
+                        div.innerHTML = `
+                            <div class="bg-slate-900/40 border border-slate-800 p-5 rounded-2xl group-hover:border-emerald-500/50 transition-colors">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">${exp.role}</h4>
+                                    <span class="text-xs font-bold font-mono text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20 whitespace-nowrap">${exp.start_year || ''} - ${exp.end_year || 'Present'}</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-slate-400 font-medium">
+                                    <i data-lucide="building-2" class="w-4 h-4 text-slate-500"></i> ${exp.company}
+                                </div>
+                            </div>
+                        `;
+                        expContainer.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('experience-section').classList.add('hidden');
+                }
+
+                // Projects
+                if (response.project && response.project.length > 0) {
+                    document.getElementById('projects-section').classList.remove('hidden');
+                    response.project.forEach(proj => {
+                        const div = document.createElement('div');
+                        div.className = 'glass-card p-6 rounded-2xl border-l-4 border-l-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.1)] transition-all flex flex-col h-full';
+                        div.innerHTML = `
+                            <h4 class="text-lg font-black text-white mb-4 line-clamp-2">${proj.name}</h4>
+                            <div class="mt-auto space-y-3">
+                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">Core Competencies</p>
+                                <div class="flex flex-wrap gap-2">
+                                    ${proj.skill_name ? proj.skill_name.map((s, i) => `
+                                        <div class="flex items-center bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+                                            <span class="px-2 py-1 text-xs text-slate-300 font-medium border-r border-slate-700">${s}</span>
+                                            <span class="px-2 py-1 text-xs font-mono font-bold bg-slate-900 text-amber-400 flex items-center gap-1">
+                                                <i data-lucide="star" class="w-3 h-3 text-amber-500"></i>
+                                                ${proj.each_skill_score ? proj.each_skill_score[i] : ''}
+                                            </span>
+                                        </div>
+                                    `).join('') : ''}
+                                </div>
+                            </div>
+                        `;
+                        projContainer.appendChild(div);
+                    });
+                } else {
+                    document.getElementById('projects-section').classList.add('hidden');
+                }
+
+                refreshIcons();
+
+            } catch (err) {
+                console.error("Analysis fetch error", err);
+                messageEl.innerText = "Error analyzing resume. Please ensure the backend is reachable.";
+                messageEl.classList.add('text-red-400');
+            }
+        }
+
+        async function fetchJobs(imageName) {
+            const messageEl = document.getElementById('jobs-message');
+            const jobsGrid = document.getElementById('jobs-grid');
+
+            messageEl.innerText = "Scanning the market for your perfect matches...";
+            jobsGrid.innerHTML = '';
+
+            try {
+                const res = await fetch(`${BASE_URL}TalentPilot/job?image_name=${imageName}`);
+                const data = await res.json();
+
+                const tableString = data.respone || '';
+
+                if (data.TalentPilot) {
+                    messageEl.innerText = data.TalentPilot;
+                } else {
+                    messageEl.innerText = "Here are the top matches based on your profile.";
+                }
+
+                if (!tableString || !tableString.includes('|')) {
+                    jobsGrid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-10">No specific jobs found or invalid response format.</div>';
+                    return;
+                }
+
+                // Parse Markdown Table
+                // Expected format: | Job Title | Company | Location | Job Type | Required Experience | Match Score | Apply Link | Salary |
+                const lines = tableString.split('\n');
+
+                // Usually line 0 is header, line 1 is separator (---), data starts at line 2.
+                for (let i = 2; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line.startsWith('|')) continue;
+
+                    const cells = line.split('|').map(cell => cell.trim());
+                    // cells[0] is empty (before first pipe)
+                    if (cells.length < 9) continue;
+
+                    const title = cells[1];
+                    const company = cells[2];
+                    const location = cells[3];
+                    const type = cells[4];
+                    const exp = cells[5];
+                    const score = cells[6];
+                    const link = cells[7] === 'N/A' ? '#' : cells[7];
+                    const salary = cells[8];
+
+                    const card = document.createElement('div');
+                    card.className = 'glass-card p-6 flex flex-col h-full rounded-2xl border border-slate-700 hover:border-indigo-500/50 hover:shadow-[0_0_30px_rgba(99,102,241,0.1)] transition-all group relative overflow-hidden';
+
+                    // Match Score Badge Logic
+                    let scoreBadgeColor = 'bg-slate-800 text-slate-300 border-slate-700';
+                    const scoreNum = parseInt(score);
+                    if (!isNaN(scoreNum)) {
+                        if (scoreNum >= 90) scoreBadgeColor = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+                        else if (scoreNum >= 75) scoreBadgeColor = 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
+                    }
+
+                    // Company Logo Fallback
+                    const initial = company.charAt(0).toUpperCase();
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 flex items-center justify-center text-xl font-bold text-slate-300 shadow-inner shrink-0">
+                                    ${initial}
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-white leading-tight group-hover:text-indigo-400 transition-colors">${title}</h3>
+                                    <p class="text-slate-400 text-sm mt-1 font-medium">${company}</p>
+                                </div>
+                            </div>
+                            <div class="px-2 py-1 rounded-md border text-xs font-black tracking-widest uppercase ${scoreBadgeColor} whitespace-nowrap">
+                                ${score}% Match
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            ${location !== 'N/A' ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-800/50 border border-slate-700/50 px-2 py-1 rounded"><i data-lucide="map-pin" class="w-3 h-3 text-red-400"></i> ${location}</span>` : ''}
+                            ${type !== 'N/A' ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-800/50 border border-slate-700/50 px-2 py-1 rounded"><i data-lucide="clock" class="w-3 h-3 text-blue-400"></i> ${type}</span>` : ''}
+                            ${exp !== 'N/A' ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-800/50 border border-slate-700/50 px-2 py-1 rounded"><i data-lucide="briefcase" class="w-3 h-3 text-amber-400"></i> ${exp}</span>` : ''}
+                        </div>
+
+                        <div class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="banknote" class="w-4 h-4 text-emerald-500"></i>
+                                <span class="text-sm font-bold text-slate-300">${salary !== 'N/A' ? salary : 'Competitive'}</span>
+                            </div>
+                            
+                            ${link !== '#' && !link.includes('N/A')
+                            ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                                    Apply <i data-lucide="external-link" class="w-4 h-4"></i>
+                                   </a>`
+                            : `<span class="px-4 py-2 rounded-lg text-sm font-medium bg-slate-800 text-slate-500 cursor-not-allowed">No Link</span>`
+                        }
+                        </div>
+                    `;
+                    jobsGrid.appendChild(card);
+                }
+
+                refreshIcons();
+
+            } catch (err) {
+                console.error("Jobs fetch error", err);
+                messageEl.innerText = "Error analyzing job matches. Please ensure the backend is reachable.";
+                messageEl.classList.add('text-red-400');
+            }
+        }
+
+        async function fetchDashboard() {
+            try {
+                const res = await fetch(`${BASE_URL}TalentPilot/dashboard`);
+                const data = await res.json();
+                const response = data.respone || {};
+
+                document.getElementById('dashboard-title').innerText = data.TalentPilot || "Dashboard";
+
+                const topTechs = response.top_technologies || [];
+                const skillAreas = response.skill_areas || [];
+                const upcoming = response.upcoming_trends || [];
+
+                if (topTechs.length > 0) {
+                    document.getElementById('stat-top-tech').innerText = topTechs[0].technology_name;
+                    document.getElementById('stat-max-salary').innerText = `$${Math.max(...topTechs.map(t => t.avg_salary)).toLocaleString()}`;
+                    document.getElementById('stat-total-jobs').innerText = topTechs.reduce((s, t) => s + t.job_count, 0).toLocaleString();
+                }
+                if (upcoming.length > 0) {
+                    document.getElementById('stat-upcoming').innerText = upcoming[0].skill_name;
+                }
+
+                const techList = document.getElementById('tech-list');
+                techList.innerHTML = '';
+                topTechs.forEach(tech => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-card p-6 rounded-3xl';
+
+                    let companiesHTML = tech.top_companies ? `<div class="mt-4"><p class="text-xs text-slate-500 uppercase mb-2">Top Companies</p><div class="flex flex-wrap gap-2">${tech.top_companies.map(c => `<span class="tech-pill">${c}</span>`).join('')}</div></div>` : '';
+
+                    let trendsHTML = tech.yearly_trends ? `
+                        <div class="mt-4 bg-slate-900/50 p-4 rounded-xl">
+                            <p class="text-xs text-slate-500 uppercase mb-3">Yearly Growth</p>
+                            <div class="flex justify-between gap-4 overflow-x-auto pb-2">
+                                ${tech.yearly_trends.map(y => `
+                                    <div class="text-center min-w-[60px]">
+                                        <p class="text-[10px] text-slate-500">${y.year}</p>
+                                        <p class="text-sm font-bold text-blue-400">${y.score}%</p>
+                                        <p class="text-[9px] text-slate-400">$${(y.avg_salary / 1000).toFixed(0)}k</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>` : '';
+
+                    let countriesHTML = tech.countries ? `
+                        <div class="mt-4">
+                            <p class="text-xs text-slate-500 uppercase mb-2">Market Presence</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                ${tech.countries.map(c => `
+                                    <div class="sub-card flex justify-between items-center">
+                                        <div>
+                                            <p class="text-sm font-semibold">${c.country_name}</p>
+                                            <p class="text-[10px] text-slate-400">${c.job_count.toLocaleString()} Jobs</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs font-bold text-green-400">$${c.avg_salary.toLocaleString()}</p>
+                                            <p class="text-[10px] text-slate-500">Score: ${c.score}</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>` : '';
+
+                    card.innerHTML = `
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
+                            <div>
+                                <h4 class="text-2xl font-bold text-white">${tech.technology_name}</h4>
+                                <p class="text-sm text-slate-400">Global Score: <span class="text-blue-400 font-bold">${tech.overall_score}%</span></p>
+                            </div>
+                            <div class="flex gap-6">
+                                <div class="text-center">
+                                    <p class="text-xs text-slate-500">Jobs</p>
+                                    <p class="text-lg font-bold">${tech.job_count.toLocaleString()}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-xs text-slate-500">Avg Salary</p>
+                                    <p class="text-lg font-bold text-green-400">$${tech.avg_salary.toLocaleString()}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>${companiesHTML} ${trendsHTML}</div>
+                            <div>${countriesHTML}</div>
+                        </div>
+                    `;
+                    techList.appendChild(card);
+                });
+
+                const skillAreaList = document.getElementById('skill-area-list');
+                skillAreaList.innerHTML = '';
+                skillAreas.forEach(area => {
+                    const div = document.createElement('div');
+                    div.className = 'glass-card p-6 rounded-3xl';
+                    div.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-lg font-bold text-purple-400">${area.skill_area_name}</h4>
+                            <span class="bg-purple-500/20 text-purple-300 text-xs font-bold px-2 py-1 rounded">${area.average_score}%</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Total Talent Pool</span>
+                                <span class="text-white font-medium">${area.job_count.toLocaleString()}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">Sector Avg Salary</span>
+                                <span class="text-green-400 font-medium">$${area.avg_salary.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-800">
+                            <p class="text-[10px] text-slate-500 uppercase mb-2">Leading Tech</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${area.top_technologies.map(t => `<span class="tech-pill">${t.technology_name}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                    skillAreaList.appendChild(div);
+                });
+
+                const upcomingList = document.getElementById('upcoming-list');
+                upcomingList.innerHTML = '';
+                upcoming.forEach(u => {
+                    const item = document.createElement('div');
+                    item.className = 'p-4 bg-slate-900/40 rounded-2xl border border-slate-800';
+                    item.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <p class="font-bold text-white">${u.skill_name}</p>
+                            <span class="text-[10px] bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded">${u.year}</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex-1 h-1.5 bg-slate-800 rounded-full">
+                                <div class="bg-blue-500 h-full rounded-full" style="width: ${u.score}%"></div>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400">${u.score}</span>
+                        </div>
+                    `;
+                    upcomingList.appendChild(item);
+                });
+
+                refreshIcons();
+            } catch (err) {
+                console.error("Dashboard error", err);
+            }
+        }
+
+        async function fetchPremadeRoadmaps() {
+            const grid = document.getElementById('premade-roadmaps-grid');
+            if (grid.children.length > 0) return; // Already loaded
+
+            try {
+                const res = await fetch(`${BASE_URL}TalentPilot/roadmap_made`);
+                const data = await res.json();
+                const responses = data.respone || [];
+
+                grid.innerHTML = '';
+                responses.forEach((item, index) => {
+                    let techName = "Machine Learning";
+                    if (item.Poster_url) {
+                        const fileName = item.Poster_url.split('/').pop().split('.')[0];
+                        techName = fileName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'premade-card group aspect-[4/3] rounded-3xl cursor-pointer flex flex-col justify-end p-6';
+
+                    const imgUrl = item.Poster_url || `https://via.placeholder.com/400x300/1e293b/64748b?text=${techName}`;
+
+                    card.innerHTML = `
+                        <img src="${imgUrl}" class="absolute inset-0 w-full h-full object-cover z-0 opacity-60 group-hover:opacity-80 transition-opacity" onerror="this.src='https://via.placeholder.com/400x300/1e293b/64748b?text=${techName}'">
+                        <div class="card-overlay absolute inset-0 z-10"></div>
+                        
+                        <div class="relative z-20 space-y-2">
+                             <div class="flex items-center gap-2">
+                                <span class="bg-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-tighter px-2 py-0.5 rounded-full border border-blue-500/30">Popular</span>
+                                <span class="text-slate-500 text-[10px] font-bold">Roadmap</span>
+                             </div>
+                             <h4 class="text-xl font-black text-white glow-text group-hover:text-blue-400 transition-colors uppercase tracking-tight">${techName}</h4>
+                             <div class="flex items-center gap-2 text-blue-500 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                                <span class="text-xs font-bold">Start Path</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                             </div>
+                        </div>
+                    `;
+                    card.onclick = () => renderDetailedRoadmap(item.respone, techName);
+                    grid.appendChild(card);
+                });
+                refreshIcons();
+            } catch (err) {
+                console.error("Premade roadmaps error", err);
+            }
+        }
+
+        async function fetchRoadmap() {
+            const tech = document.getElementById('roadmap-tech-input').value.trim();
+            if (!tech) return;
+
+            const displaySection = document.getElementById('roadmap-display-section');
+            const nodesContainer = document.getElementById('roadmap-nodes-container');
+            const placeholder = document.getElementById('roadmap-placeholder');
+
+            placeholder.classList.add('hidden');
+            displaySection.classList.remove('hidden');
+            nodesContainer.innerHTML = '<div class="text-center py-20 text-slate-400">Analyzing skills and generating roadmap...</div>';
+            scrollRoadmapIntoView();
+
+            try {
+                const res = await fetch(`${BASE_URL}TalentPilot/roadmap?tech_name=${encodeURIComponent(tech)}`);
+                const data = await res.json();
+                renderDetailedRoadmap(data.respone, tech);
+                document.getElementById('roadmap-status-title').innerText = data.TalentPilot || `Learning Journey for ${tech}`;
+            } catch (err) {
+                console.error("Roadmap fetch error", err);
+                nodesContainer.innerHTML = '<div class="text-center py-20 text-red-400">Error generating roadmap. Please try again.</div>';
+            }
+        }
+
+        function renderDetailedRoadmap(roadmap, techName) {
+            const displaySection = document.getElementById('roadmap-display-section');
+            const nodesContainer = document.getElementById('roadmap-nodes-container');
+            const placeholder = document.getElementById('roadmap-placeholder');
+
+            placeholder.classList.add('hidden');
+            displaySection.classList.remove('hidden');
+            nodesContainer.innerHTML = '';
+
+            document.getElementById('roadmap-status-title').innerText = `Learning Journey: ${techName}`;
+
+            if (!roadmap || !roadmap.nodes || roadmap.nodes.length === 0) {
+                nodesContainer.innerHTML = '<div class="text-center py-20 text-slate-400">No roadmap data found for this technology.</div>';
+                return;
+            }
+
+            const colors = [
+                { dot: 'bg-blue-500', border: 'border-blue-500/40', badge: 'bg-blue-500/10 text-blue-400 border-blue-500/30', step: 'text-blue-400' },
+                { dot: 'bg-emerald-500', border: 'border-emerald-500/40', badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30', step: 'text-emerald-400' },
+                { dot: 'bg-violet-500', border: 'border-violet-500/40', badge: 'bg-violet-500/10 text-violet-400 border-violet-500/30', step: 'text-violet-400' },
+                { dot: 'bg-amber-500', border: 'border-amber-500/40', badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30', step: 'text-amber-400' },
+                { dot: 'bg-pink-500', border: 'border-pink-500/40', badge: 'bg-pink-500/10 text-pink-400 border-pink-500/30', step: 'text-pink-400' },
+                { dot: 'bg-cyan-500', border: 'border-cyan-500/40', badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30', step: 'text-cyan-400' },
+            ];
+
+            // Timeline wrapper — feels like an actual roadmap, four columns on desktop
+            const track = document.createElement('div');
+            track.className = 'roadmap-track grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6';
+
+            roadmap.nodes.forEach((node, index) => {
+                const c = colors[index % colors.length];
+
+                const conceptsHTML = (node.concepts || []).slice(0, 6).map(con =>
+                    `<span class="inline-block text-[10px] font-semibold text-slate-300 bg-slate-800 border border-slate-700 px-2 py-0.5 rounded-md">${con}</span>`
+                ).join('');
+
+                const projectsHTML = (node.projects || []).slice(0, 3).map(p =>
+                    `<li class="flex items-start gap-1.5 text-xs text-slate-300">
+                        <i data-lucide="check-circle-2" class="w-3 h-3 ${c.step} shrink-0 mt-0.5"></i>
+                        <span>${p}</span>
+                    </li>`
+                ).join('');
+
+                const resourceLink = node.resources_website && node.resources_website !== 'N/A'
+                    ? `<a href="${node.resources_website}" target="_blank" rel="noopener noreferrer"
+                          class="mt-4 inline-flex items-center gap-1.5 text-[10px] font-bold px-3 py-1.5 rounded-lg border ${c.badge} transition-all hover:opacity-80">
+                          <i data-lucide="book-open" class="w-3 h-3"></i> Learn
+                       </a>`
+                    : '';
+
+                const stop = document.createElement('div');
+                stop.className = 'glass-card rounded-2xl border ${c.border} p-5 flex flex-col hover:shadow-xl transition-all relative overflow-hidden';
+                stop.innerHTML = `
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="roadmap-dot ${c.dot} text-white">
+                            <span class="sr-only">Phase ${index + 1}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-black uppercase tracking-widest ${c.step}">Phase ${index + 1}</span>
+                            <h3 class="text-lg font-black text-white leading-tight mt-0.5">${node.label}</h3>
+                        </div>
+                    </div>
+
+                    ${conceptsHTML ? `<p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Concepts</p>
+                    <div class="flex flex-wrap gap-1.5 mb-5">${conceptsHTML}</div>` : ''}
+
+                    ${projectsHTML ? `<p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Projects</p>
+                    <ul class="space-y-1.5 mb-4">${projectsHTML}</ul>` : ''}
+
+                    <div class="mt-auto">${resourceLink}</div>
+                `;
+
+                track.appendChild(stop);
+            });
+
+            nodesContainer.appendChild(track);
+            refreshIcons();
+            scrollRoadmapIntoView();
+        }
+
+        function scrollRoadmapIntoView() {
+            const container = document.getElementById('roadmap-container');
+            const displaySection = document.getElementById('roadmap-display-section');
+            const viewContent = document.getElementById('view-content');
+            const target = container || displaySection;
+
+            if (target && viewContent) {
+                const targetTop = target.offsetTop + 180; // push further down for clearer view
+                viewContent.scrollTo({ top: targetTop, behavior: 'smooth' });
+            } else if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        async function fetchNews(page) {
+            const topic = document.getElementById('news-topic-select').value;
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = '<div class="col-span-full py-10 text-center text-slate-400">Loading latest news...</div>';
+
+            try {
+                const res = await fetch(`${BASE_URL}TalentPilot/tech_news?q=${encodeURIComponent(topic)}&page_number=${page}`);
+                const data = await res.json();
+
+                // Handle both "response" and "respone" keys from backend
+                const articles = data.response || data.respone || [];
+
+                document.getElementById('news-status-title').innerText = data.TalentPilot || `News related to ${topic}`;
+                state.newsPage = page;
+                document.getElementById('news-page-num').innerText = `Page ${page} of ${state.maxNewsPage}`;
+
+                document.getElementById('news-prev').disabled = page <= 1;
+                document.getElementById('news-next').disabled = page >= state.maxNewsPage;
+
+                grid.innerHTML = '';
+                if (articles.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full py-10 text-center text-slate-400">No news found for this topic.</div>';
+                    return;
+                }
+
+                articles.forEach(article => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-card news-card flex flex-col rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all cursor-pointer';
+
+                    // Robust URL handling
+                    const resourceUrl = article.Resource_url || '#';
+                    card.onclick = () => { if (resourceUrl !== '#') window.open(resourceUrl, '_blank') };
+
+                    const img = article.Image_url || 'https://via.placeholder.com/400x200/1e293b/64748b?text=No+Image';
+
+                    let hostname = 'Tech Desk';
+                    try {
+                        if (resourceUrl !== '#') {
+                            hostname = new URL(resourceUrl).hostname;
+                        }
+                    } catch (e) {
+                        console.warn("Invalid URL for article:", resourceUrl);
+                    }
+
+                    card.innerHTML = `
+                        <img src="${img}" alt="News" onerror="this.src='https://via.placeholder.com/400x200/1e293b/64748b?text=News'">
+                        <div class="p-4 flex-1 flex flex-col">
+                            <span class="text-[10px] text-blue-400 font-bold uppercase mb-1">${article.Author || hostname}</span>
+                            <h4 class="text-sm font-bold text-white mb-2 line-clamp-2">${article.Title || 'Tech Update'}</h4>
+                            <p class="text-xs text-slate-400 line-clamp-3 mb-4">${article.Description || ''}</p>
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-[10px] text-slate-500 italic">via ${hostname}</span>
+                                <i data-lucide="external-link" class="w-3 h-3 text-slate-500"></i>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+                refreshIcons();
+            } catch (err) {
+                console.error("News fetch error", err);
+                grid.innerHTML = '<div class="col-span-full py-10 text-center text-red-400">Error loading news. Please try again later.</div>';
+            }
+        }
+
+        function changePage(delta) {
+            const newPage = state.newsPage + delta;
+            if (newPage >= 1 && newPage <= state.maxNewsPage) {
+                fetchNews(newPage);
+                document.getElementById('view-content').scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        async function handleFileUpload(input) {
+            if (!input.files[0]) return;
+            const file = input.files[0];
+
+            const btnText = document.getElementById('upload-btn-text');
+            const icon = document.getElementById('upload-icon');
+            const spinner = document.getElementById('upload-spinner');
+            const messageEl = document.getElementById('upload-message');
+            const analysisBtn = document.getElementById('btn-analysis');
+
+            // Reset UI
+            messageEl.innerText = "";
+            messageEl.className = "mt-4 text-sm font-medium h-5";
+            btnText.innerText = "Uploading...";
+            icon.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            input.disabled = true;
+
+            const formData = new FormData();
+            formData.append('f1', file);
+
+            try {
+                const res = await fetch(`${BASE_URL}TalentPilot/resume_upload`, { method: 'POST', body: formData });
+                const data = await res.json();
+
+                const uploadedImageName = data.image_name || data.Image_name;
+
+                if (uploadedImageName) {
+                    state.imageName = uploadedImageName;
+
+                    messageEl.innerText = "Resume uploaded successfully!";
+                    messageEl.classList.remove('text-red-400');
+                    messageEl.classList.add('text-green-400');
+                    analysisBtn.classList.remove('hidden');
+                    const jobsBtn = document.getElementById('btn-jobs');
+                    if (jobsBtn) jobsBtn.classList.remove('hidden');
+                    const reviewBtn = document.getElementById('btn-review');
+                    if (reviewBtn) reviewBtn.classList.remove('hidden');
+                    const interviewBtn = document.getElementById('btn-interview');
+                    if (interviewBtn) interviewBtn.classList.remove('hidden');
+                    const refineBtn = document.getElementById('btn-refine');
+                    if (refineBtn) refineBtn.classList.remove('hidden');
+
+                    // Reset button instantly for future uploads
+                    btnText.innerText = "Select File";
+                    icon.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                    input.disabled = false;
+                    input.value = ""; // Clear input
+
+                    setTimeout(() => {
+                        switchTab('analysis');
+                    }, 1500);
+                } else {
+                    messageEl.innerText = 'Upload failed: Invalid response format.';
+                    if (res.status && res.status !== 200) {
+                        messageEl.innerText = "Error: " + res.statusText;
+                    }
+                    messageEl.classList.add('text-red-400');
+                    analysisBtn.classList.add('hidden'); // Ensure it hides on fail
+                    if (jobsBtn) jobsBtn.classList.add('hidden');
+                    if (reviewBtn) reviewBtn.classList.add('hidden');
+                    if (interviewBtn) interviewBtn.classList.add('hidden');
+                    if (refineBtn) refineBtn.classList.add('hidden'); // Hide refine button
+                    // Reset Button completely
+                    btnText.innerText = "Select File";
+                    icon.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                    input.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                messageEl.innerText = "An error occurred during upload.";
+                messageEl.classList.add('text-red-400');
+                analysisBtn.classList.add('hidden'); // Ensure it hides on error
+                const jobsBtn = document.getElementById('btn-jobs');
+                if (jobsBtn) jobsBtn.classList.add('hidden');
+                const reviewBtn = document.getElementById('btn-review');
+                if (reviewBtn) reviewBtn.classList.add('hidden');
+                const interviewBtn = document.getElementById('btn-interview');
+                if (interviewBtn) interviewBtn.classList.add('hidden');
+                const refineBtn = document.getElementById('btn-refine');
+                if (refineBtn) refineBtn.classList.add('hidden');
+                // Reset Button completely
+                btnText.innerText = "Select File";
+                icon.classList.remove('hidden');
+                spinner.classList.add('hidden');
+                input.disabled = false;
+            }
+        }
+
+        window.onload = () => {
+            refreshIcons();
+            switchTab('upload');
+        };
+
+        // --- Resume Review Chatbot Logic ---
+        function initChat() {
+            const history = document.getElementById('chat-history');
+            if (history.children.length === 0) {
+                appendMessage("AI", "Hi! I'm your Expert Resume Reviewer. How can I help you refine your resume today?");
+            }
+        }
+
+        function appendMessage(sender, text, isMarkdown = false) {
+            const history = document.getElementById('chat-history');
+            const row = document.createElement('div');
+            row.className = `flex ${sender === 'User' ? 'justify-end' : 'justify-start'}`;
+
+            const bubble = document.createElement('div');
+
+            if (sender === 'User') {
+                bubble.className = "max-w-[80%] bg-indigo-600 text-white rounded-2xl rounded-br-sm px-6 py-4 shadow-lg";
+                bubble.innerText = text;
+            } else {
+                bubble.className = "max-w-[90%] glass-card border border-slate-700 rounded-2xl rounded-bl-sm px-6 py-4 shadow-xl";
+                if (isMarkdown && typeof marked !== 'undefined') {
+                    bubble.innerHTML = `<div class="markdown-body">${marked.parse(text)}</div>`;
+                } else {
+                    bubble.innerText = text;
+                }
+            }
+
+            row.appendChild(bubble);
+            history.appendChild(row);
+            history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+            refreshIcons();
+            return row;
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text || !state.imageName) return;
+
+            input.value = '';
+            input.disabled = true;
+
+            appendMessage("User", text);
+
+            const loadingRow = appendMessage("AI", "Analyzing...");
+            loadingRow.querySelector('div').innerHTML = `
+                <div class="flex items-center gap-3 text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span class="font-medium tracking-widest uppercase text-xs">Reviewing</span>
+                </div>
+            `;
+            refreshIcons();
+
+            try {
+                const url = `${BASE_URL}TalentPilot/review?image_name=${encodeURIComponent(state.imageName)}&user_text=${encodeURIComponent(text)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                loadingRow.remove();
+
+                if (data && data.respone) {
+                    appendMessage("AI", data.respone, true);
+                } else {
+                    appendMessage("AI", "Sorry, I couldn't process that response correctly.");
+                }
+            } catch (err) {
+                console.error("Chat error:", err);
+                loadingRow.remove();
+                appendMessage("AI", "An error occurred while reaching the server.");
+            } finally {
+                input.disabled = false;
+                input.focus();
+            }
+        }
+
+        // --- Interview Coach Chatbot Logic ---
+        function initInterviewChat() {
+            const history = document.getElementById('chat-history-interview');
+            history.innerHTML = '';
+            document.getElementById('interview-start-container').classList.remove('hidden');
+            document.getElementById('interview-start-container').querySelector('button').innerHTML = '<i data-lucide="play" class="w-6 h-6"></i> Start Mock Interview';
+            document.getElementById('interview-controls-container').classList.add('hidden');
+            refreshIcons();
+        }
+
+        function startInterview() {
+            document.getElementById('interview-start-container').classList.add('hidden');
+            document.getElementById('interview-controls-container').classList.remove('hidden');
+            sendInterviewChatMessage('Start');
+        }
+
+        function appendInterviewMessage(sender, text, isMarkdown = false) {
+            const history = document.getElementById('chat-history-interview');
+            const row = document.createElement('div');
+            row.className = `flex ${sender === 'User' ? 'justify-end' : 'justify-start'}`;
+
+            const bubble = document.createElement('div');
+
+            if (sender === 'User') {
+                bubble.className = "max-w-[80%] bg-emerald-600 text-white rounded-2xl rounded-br-sm px-6 py-4 shadow-lg";
+                bubble.innerText = text;
+            } else {
+                bubble.className = "max-w-[90%] glass-card border border-slate-700 rounded-2xl rounded-bl-sm px-6 py-4 shadow-xl";
+                if (isMarkdown && typeof marked !== 'undefined') {
+                    bubble.innerHTML = `<div class="markdown-body">${marked.parse(text)}</div>`;
+                } else {
+                    bubble.innerText = text;
+                }
+            }
+
+            row.appendChild(bubble);
+            history.appendChild(row);
+            history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+            refreshIcons();
+            return row;
+        }
+
+        async function sendInterviewChatMessage(forcedText = null) {
+            const input = document.getElementById('chat-input-interview');
+            const text = forcedText !== null ? forcedText : input.value.trim();
+            if (!text || !state.imageName) return;
+
+            if (forcedText === null) {
+                input.value = '';
+            }
+            input.disabled = true;
+
+            appendInterviewMessage("User", text);
+
+            if (text.toLowerCase() === 'stop') {
+                document.getElementById('interview-controls-container').classList.add('hidden');
+                document.getElementById('interview-start-container').classList.remove('hidden');
+                document.getElementById('interview-start-container').querySelector('button').innerHTML = '<i data-lucide="rotate-ccw" class="w-6 h-6"></i> Restart Interview';
+                refreshIcons();
+            }
+
+            const loadingRow = appendInterviewMessage("AI", "Listening...");
+            loadingRow.querySelector('div').innerHTML = `
+                <div class="flex items-center gap-3 text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span class="font-medium tracking-widest uppercase text-xs">Formulating</span>
+                </div>
+            `;
+            refreshIcons();
+
+            try {
+                const url = `${BASE_URL}TalentPilot/interview?image_name=${encodeURIComponent(state.imageName)}&text=${encodeURIComponent(text)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                loadingRow.remove();
+
+                if (data && data.respone) {
+                    appendInterviewMessage("AI", data.respone, true);
+                } else {
+                    appendInterviewMessage("AI", "Sorry, I couldn't process that response correctly.");
+                }
+            } catch (err) {
+                console.error("Chat error:", err);
+                loadingRow.remove();
+                appendInterviewMessage("AI", "An error occurred while reaching the server.");
+            } finally {
+                input.disabled = false;
+                input.focus();
+            }
+        }
+
+        // --- Build Resume Chatbot Logic ---
+        let buildTemplateChoice = null;
+
+        function toggleTemplates() {
+            const popover = document.getElementById('templates-popover');
+            popover.classList.toggle('hidden');
+        }
+
+        function selectTemplate(choice) {
+            buildTemplateChoice = choice;
+            document.getElementById('templates-popover').classList.add('hidden');
+
+            [1, 2, 3].forEach(id => {
+                const el = document.getElementById(`template-${id}`);
+                if (el) {
+                    if (id.toString() === choice) {
+                        el.classList.add('border-fuchsia-500', 'ring-2', 'ring-fuchsia-500');
+                        el.classList.remove('border-slate-700');
+                    } else {
+                        el.classList.remove('border-fuchsia-500', 'ring-2', 'ring-fuchsia-500');
+                        el.classList.add('border-slate-700');
+                    }
+                }
+            });
+
+            // Update label in start screen
+            const label = document.getElementById('build-template-label');
+            if (label) label.innerText = `Template ${choice} ✓`;
+            const toggleBtn = document.getElementById('btn-toggle-templates');
+            if (toggleBtn) {
+                toggleBtn.classList.add('bg-fuchsia-600', 'text-white', 'border-fuchsia-500');
+                toggleBtn.classList.remove('bg-slate-800', 'text-slate-300');
+            }
+
+            // Enable Start button
+            const startBtn = document.getElementById('btn-build-start');
+            if (startBtn) startBtn.disabled = false;
+        }
+
+        async function startBuildSession() {
+            if (!buildTemplateChoice) return;
+            const text = 'Start';
+
+            // Swap Start screen → chat input
+            document.getElementById('build-start-container').classList.add('hidden');
+            document.getElementById('build-chat-container').classList.remove('hidden');
+
+            // Show user message and send to endpoint
+            appendBuildMessage("User", text);
+
+            const loadingRow = appendBuildMessage("AI", "Building...");
+            loadingRow.querySelector('div').innerHTML = `
+                <div class="flex items-center gap-3 text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span class="font-medium tracking-widest uppercase text-xs">Building</span>
+                </div>
+            `;
+            refreshIcons();
+
+            try {
+                const url = `${BASE_URL}TalentPilot/new_resume?user_choice=${encodeURIComponent(buildTemplateChoice)}`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ text: text })
+                });
+                const data = await res.json();
+                loadingRow.remove();
+
+                if (data && data.respone) {
+                    if (data.respone.response) {
+                        appendBuildMessage("AI", data.respone.response, true);
+                    } else if (data.respone.Public_url) {
+                        renderBuildResumeCard(data.respone);
+                    } else {
+                        appendBuildMessage("AI", "Got it! Let's continue building your resume.");
+                    }
+                } else {
+                    appendBuildMessage("AI", "Sorry, I couldn't process that. Please try again.");
+                }
+            } catch (err) {
+                console.error("Build start error:", err);
+                loadingRow.remove();
+                appendBuildMessage("AI", "An error occurred while reaching the server.");
+            } finally {
+                const chatInput = document.getElementById('chat-input-build');
+                if (chatInput) { chatInput.disabled = false; chatInput.focus(); }
+                const sendBtn = document.getElementById('btn-send-build');
+                if (sendBtn) sendBtn.disabled = false;
+            }
+        }
+
+        function renderBuildResumeCard(respone) {
+            const history = document.getElementById('chat-history-build');
+            const row = document.createElement('div');
+            row.className = `flex justify-start w-full mt-4`;
+            row.innerHTML = `
+                <div class="max-w-[80%] glass-card border flex flex-col items-center border-fuchsia-700/50 rounded-2xl rounded-bl-sm p-4 shadow-xl">
+                    <img src="${respone.Public_url}" class="rounded-xl w-full h-auto max-w-sm mb-4 shadow-lg border border-slate-700 hover:border-fuchsia-500 transition-colors" alt="Generated Resume" />
+                    <div class="w-full flex justify-between items-center px-2">
+                        <div class="flex items-center gap-2 text-slate-400">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                            <span class="text-xs font-medium tracking-wide">Resume Rendered</span>
+                        </div>
+                        <a href="${respone.Public_url}" target="_blank" class="text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2">
+                            <i data-lucide="external-link" class="w-3 h-3"></i> Open
+                        </a>
+                    </div>
+                </div>
+            `;
+            history.appendChild(row);
+            window.state = window.state || {};
+            window.state.generatedResumeFile = respone.File_name;
+            history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+            refreshIcons();
+        }
+
+        function initBuildChat() {
+            const history = document.getElementById('chat-history-build');
+            if (history.children.length === 0) {
+                appendBuildMessage("AI", "Welcome to the AI Resume Builder! Please click the **Templates** button (the icon on the left) to choose a template before we begin.", true);
+            }
+        }
+
+        function appendBuildMessage(sender, text, isMarkdown = false) {
+            const history = document.getElementById('chat-history-build');
+            const row = document.createElement('div');
+            row.className = `flex ${sender === 'User' ? 'justify-end' : 'justify-start'}`;
+
+            const bubble = document.createElement('div');
+
+            if (sender === 'User') {
+                bubble.className = "max-w-[80%] bg-fuchsia-600 text-white rounded-2xl rounded-br-sm px-6 py-4 shadow-lg";
+                bubble.innerText = text;
+            } else {
+                bubble.className = "max-w-[90%] glass-card border border-slate-700 rounded-2xl rounded-bl-sm px-6 py-4 shadow-xl text-white";
+                if (isMarkdown && typeof marked !== 'undefined') {
+                    bubble.innerHTML = `<div class="markdown-body">${marked.parse(text)}</div>`;
+                } else {
+                    bubble.innerText = text;
+                }
+            }
+
+            row.appendChild(bubble);
+            history.appendChild(row);
+            history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+            refreshIcons();
+            return row;
+        }
+
+        async function sendBuildChatMessage(overrideText = null) {
+            const input = document.getElementById('chat-input-build');
+            const btn = document.getElementById('btn-send-build');
+            const skipBtn = document.getElementById('btn-skip-build');
+
+            const text = overrideText !== null ? overrideText : input.value.trim();
+            if (!text || !buildTemplateChoice) return;
+
+            if (overrideText === null) input.value = '';
+
+            input.disabled = true;
+            btn.disabled = true;
+            if (skipBtn) skipBtn.disabled = true;
+
+            appendBuildMessage("User", text);
+
+            const loadingRow = appendBuildMessage("AI", "Generating...");
+            loadingRow.querySelector('div').innerHTML = `
+                <div class="flex items-center gap-3 text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span class="font-medium tracking-widest uppercase text-xs">Building</span>
+                </div>
+            `;
+            refreshIcons();
+
+            try {
+                const url = `${BASE_URL}TalentPilot/new_resume?user_choice=${encodeURIComponent(buildTemplateChoice)}`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ text: text })
+                });
+
+                const data = await res.json();
+                loadingRow.remove();
+
+                if (data && data.respone) {
+                    if (data.respone.response) {
+                        appendBuildMessage("AI", data.respone.response, true);
+                    } else if (data.respone.Public_url) {
+                        const history = document.getElementById('chat-history-build');
+                        const row = document.createElement('div');
+                        row.className = `flex justify-start w-full mt-4`;
+                        row.innerHTML = `
+                            <div class="max-w-[80%] glass-card border flex flex-col items-center border-fuchsia-700/50 rounded-2xl rounded-bl-sm p-4 shadow-xl">
+                                <img src="${data.respone.Public_url}" class="rounded-xl w-full h-auto max-w-md mb-4 shadow-lg border border-slate-700 hover:border-fuchsia-500 transition-colors" alt="Generated Resume" />
+                                <div class="w-full flex justify-between items-center px-2">
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                                        <span class="text-xs font-medium tracking-wide">Resume Rendered</span>
+                                    </div>
+                                    <a href="${data.respone.Public_url}" target="_blank" class="text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2">
+                                        <i data-lucide="external-link" class="w-3 h-3"></i> Open
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                        history.appendChild(row);
+
+                        // Store it in state for further uses globally
+                        window.state = window.state || {};
+                        window.state.generatedResumeFile = data.respone.File_name;
+
+                        history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+                        refreshIcons();
+                    } else {
+                        appendBuildMessage("AI", "Completed without valid string response.");
+                    }
+                } else {
+                    appendBuildMessage("AI", "Sorry, I couldn't process that response correctly.");
+                }
+            } catch (err) {
+                console.error("Chat error:", err);
+                loadingRow.remove();
+                appendBuildMessage("AI", "An error occurred while reaching the server.");
+            } finally {
+                input.disabled = false;
+                btn.disabled = false;
+                if (skipBtn) skipBtn.disabled = false;
+                input.focus();
+            }
+        }
+
+        // --- Make Better (Refine Resume) Chatbot Logic ---
+        let refineTemplateChoice = "2"; // Default Choice 2 as requested
+
+        function toggleRefineTemplates() {
+            const popover = document.getElementById('templates-popover-refine');
+            popover.classList.toggle('hidden');
+        }
+
+        function selectRefineTemplate(choice) {
+            refineTemplateChoice = choice;
+            document.getElementById('templates-popover-refine').classList.add('hidden');
+
+            [1, 2, 3].forEach(id => {
+                const el = document.getElementById(`refine-template-${id}`);
+                if (id.toString() === choice) {
+                    el.classList.add('border-yellow-500', 'ring-2', 'ring-yellow-500');
+                    el.classList.remove('border-slate-700');
+                } else {
+                    el.classList.remove('border-yellow-500', 'ring-2', 'ring-yellow-500');
+                    el.classList.add('border-slate-700');
+                }
+            });
+
+            const label = document.getElementById('refine-template-label');
+            if (label) label.innerText = `Template ${choice} ✓`;
+            const toggleBtn = document.getElementById('btn-toggle-templates-refine');
+            if (toggleBtn) {
+                toggleBtn.classList.add('bg-yellow-600', 'text-white', 'border-yellow-500');
+                toggleBtn.classList.remove('bg-slate-800', 'text-slate-300');
+            }
+
+            const startBtn = document.getElementById('btn-refine-start');
+            if (startBtn) startBtn.disabled = false;
+        }
+
+        async function startRefineSession() {
+            if (!state.imageName) return;
+            const text = 'How can i make it better';
+
+            // Swap Start screen → chat input
+            document.getElementById('refine-start-container').classList.add('hidden');
+            document.getElementById('refine-chat-container').classList.remove('hidden');
+
+            appendRefineMessage("User", text);
+
+            const loadingRow = appendRefineMessage("AI", "Thinking...");
+            loadingRow.querySelector('div').innerHTML = `
+                <div class="flex items-center gap-3 text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span class="font-medium tracking-widest uppercase text-xs">Analyzing</span>
+                </div>
+            `;
+            refreshIcons();
+
+            try {
+                const url = `${BASE_URL}TalentPilot/new_resume?image_name=${encodeURIComponent(state.imageName)}&user_choice=${encodeURIComponent(refineTemplateChoice)}`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ text: text })
+                });
+                const data = await res.json();
+                loadingRow.remove();
+
+                if (data && data.respone) {
+                    if (data.respone.response) {
+                        appendRefineMessage("AI", data.respone.response, true);
+                    } else if (data.respone.Public_url) {
+                        const history = document.getElementById('chat-history-refine');
+                        const row = document.createElement('div');
+                        row.className = `flex justify-start w-full mt-4`;
+                        row.innerHTML = `
+                            <div class="max-w-[80%] glass-card border flex flex-col items-center border-yellow-700/50 rounded-2xl rounded-bl-sm p-4 shadow-xl">
+                                <img src="${data.respone.Public_url}" class="rounded-xl w-full h-auto max-w-sm mb-4 shadow-lg border border-slate-700 hover:border-yellow-500 transition-colors" alt="Refined Resume" />
+                                <div class="w-full flex justify-between items-center px-2">
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                                        <span class="text-xs font-medium tracking-wide">Resume Improved</span>
+                                    </div>
+                                    <a href="${data.respone.Public_url}" target="_blank" class="text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2">
+                                        <i data-lucide="external-link" class="w-3 h-3"></i> Open
+                                    </a>
+                                </div>
+                            </div>
+                         `;
+                        history.appendChild(row);
+                        window.state.generatedResumeFile = data.respone.File_name;
+                        history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+                        refreshIcons();
+                    } else {
+                        appendRefineMessage("AI", "Completed without valid string response.");
+                    }
+                } else {
+                    appendRefineMessage("AI", "Sorry, I couldn't process that response correctly.");
+                }
+            } catch (err) {
+                console.error("Refine start error:", err);
+                loadingRow.remove();
+                appendRefineMessage("AI", "An error occurred while reaching the server.");
+            } finally {
+                const chatInput = document.getElementById('chat-input-refine');
+                if (chatInput) { chatInput.disabled = false; chatInput.focus(); }
+                const sendBtn = document.getElementById('btn-send-refine');
+                if (sendBtn) sendBtn.disabled = false;
+            }
+        }
+
+        function initRefineChat() {
+            const history = document.getElementById('chat-history-refine');
+            if (history.children.length === 0) {
+                appendRefineMessage("AI", "Welcome! I'll help improve your existing resume. Please click the **Templates** button on the left to choose a target layout first.", true);
+            }
+        }
+
+        function appendRefineMessage(sender, text, isMarkdown = false) {
+            const history = document.getElementById('chat-history-refine');
+            const row = document.createElement('div');
+            row.className = `flex ${sender === 'User' ? 'justify-end' : 'justify-start'}`;
+            const bubble = document.createElement('div');
+            if (sender === 'User') {
+                bubble.className = "max-w-[80%] bg-yellow-600 text-white rounded-2xl rounded-br-sm px-6 py-4 shadow-lg";
+                bubble.innerText = text;
+            } else {
+                bubble.className = "max-w-[90%] glass-card border border-slate-700 rounded-2xl rounded-bl-sm px-6 py-4 shadow-xl text-white";
+                if (isMarkdown && typeof marked !== 'undefined') {
+                    bubble.innerHTML = `<div class="markdown-body">${marked.parse(text)}</div>`;
+                } else {
+                    bubble.innerText = text;
+                }
+            }
+            row.appendChild(bubble);
+            history.appendChild(row);
+            history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+            refreshIcons();
+            return row;
+        }
+
+        async function sendRefineChatMessage() {
+            const input = document.getElementById('chat-input-refine');
+            const btn = document.getElementById('btn-send-refine');
+            const text = input.value.trim();
+            if (!text || !refineTemplateChoice || !state.imageName) return;
+
+            input.value = '';
+            input.disabled = true;
+            btn.disabled = true;
+
+            appendRefineMessage("User", text);
+
+            const loadingRow = appendRefineMessage("AI", "Working...");
+            loadingRow.querySelector('div').innerHTML = `
+                <div class="flex items-center gap-3 text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span class="font-medium tracking-widest uppercase text-xs">Refining</span>
+                </div>
+            `;
+            refreshIcons();
+
+            try {
+                const url = `${BASE_URL}TalentPilot/new_resume?user_choice=${encodeURIComponent(refineTemplateChoice)}&image_name=${encodeURIComponent(state.imageName)}`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ text: text })
+                });
+                const data = await res.json();
+                loadingRow.remove();
+
+                if (data && data.respone) {
+                    if (data.respone.response) {
+                        appendRefineMessage("AI", data.respone.response, true);
+                    } else if (data.respone.Public_url) {
+                        const history = document.getElementById('chat-history-refine');
+                        const row = document.createElement('div');
+                        row.className = `flex justify-start w-full mt-4`;
+                        row.innerHTML = `
+                            <div class="max-w-[80%] glass-card border flex flex-col items-center border-yellow-700/50 rounded-2xl rounded-bl-sm p-4 shadow-xl">
+                                <img src="${data.respone.Public_url}" class="rounded-xl w-full h-auto max-w-sm mb-4 shadow-lg border border-slate-700 hover:border-yellow-500 transition-colors" alt="Refined Resume" />
+                                <div class="w-full flex justify-between items-center px-2">
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                                        <span class="text-xs font-medium tracking-wide">Resume Improved</span>
+                                    </div>
+                                    <a href="${data.respone.Public_url}" target="_blank" class="text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg border border-slate-600 transition-colors flex items-center gap-2">
+                                        <i data-lucide="external-link" class="w-3 h-3"></i> Open
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                        history.appendChild(row);
+                        window.state.generatedResumeFile = data.respone.File_name;
+                        history.scrollTo({ top: history.scrollHeight, behavior: 'smooth' });
+                        refreshIcons();
+                    } else {
+                        appendRefineMessage("AI", "Completed without valid response.");
+                    }
+                } else {
+                    appendRefineMessage("AI", "Sorry, I couldn't process that response correctly.");
+                }
+            } catch (err) {
+                console.error("Refine chat error:", err);
+                loadingRow.remove();
+                appendRefineMessage("AI", "An error occurred while reaching the server.");
+            } finally {
+                input.disabled = false;
+                btn.disabled = false;
+                input.focus();
+            }
+        }
+
+    </script>
+</body>
+
+</html>
